@@ -1,0 +1,9 @@
+# Core Agent Framework
+crewai[google-genai]
+crewai-tools
+
+# Connection to Google Gemini
+langchain-google-genai
+
+# Tool to manage environment variables (secrets)
+python-dotenv
