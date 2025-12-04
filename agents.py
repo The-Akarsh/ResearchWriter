@@ -1,45 +1,49 @@
 import os
 from dotenv import load_dotenv
 from crewai import Agent, LLM
-from crewai_tools import SerperDevTool
+from google.genai import types 
 
 load_dotenv()
 
-# 1. Shared Brain (The LLM)
-my_llm = LLM(
-    model=os.getenv("MODEL"),
-    api_key=os.getenv("GEMINI_API_KEY")
+# 1. DEFINE THE BRAIN + NATIVE SEARCH
+# Create the search tool configuration
+# Note: We do not need to export this variable. It stays local to this file.
+google_search_tool = types.Tool(
+    google_search=types.GoogleSearch()
 )
 
-# This is the "search engine" the researcher will use.
-search_tool = SerperDevTool()
+# Attach it to the LLM
+my_llm = LLM(
+    model=os.getenv("MODEL"),
+    api_key=os.getenv("GEMINI_API_KEY"),
+    tools=[google_search_tool] 
+)
 
-# 3. Agent: The Researcher
+# 2. DEFINE AGENT 1: THE RESEARCHER
 researcher = Agent(
     role='Senior Research Analyst',
     goal='Uncover cutting-edge developments in {topic}',
-    verbose=True, # This lets us see its "thoughts" in the console
-    memory=True,  # Remembers what it found earlier in the conversation
+    verbose=True, 
+    memory=True,  
     backstory=(
         "You are a veteran analyst at a top tech firm."
-        "You are relentless in finding facts, statistics, and market trends."
         "You refuse to accept generic answers; you dig deep."
+        "You prioritize real-time data from Google Search."
     ),
-    tools=[search_tool], # <--- We give it the search tool here!
+    tools=[], # Empty because the LLM handles it natively
     llm=my_llm
 )
 
-# 4. Agent: The Writer
+# 3. DEFINE AGENT 2: THE ANALYST
 writer = Agent(
     role='Lead Technical Analyst',
     goal='Summarize complex search results into strict, factual bullet points.',
-    verbose=False, # Cleaner output
+    verbose=False, 
     memory=True,
     backstory=(
         "You are a blunt, no-nonsense technical analyst."
         "You hate fluff, adjectives, and marketing buzzwords."
         "You only care about raw data, specs, and verified facts."
-        "If a search result looks like a rumor, you ignore it."
     ),
     tools=[], 
     llm=my_llm

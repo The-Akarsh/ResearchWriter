@@ -1,7 +1,6 @@
 # Core Agent Framework
 crewai[google-genai]
-crewai-tools
-
+streamlit
 # Connection to Google Gemini
 langchain-google-genai
 
