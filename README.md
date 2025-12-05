@@ -1,6 +1,6 @@
 # ResearchWriter
 
-> This is a mini project created to learn about Agentic agent.
+> This is a mini project created to learn about Agentic agent.  You can checkout my app in [Agentic Research Pro](https://researchwriter2025.streamlit.app/)
 
 ---
 
