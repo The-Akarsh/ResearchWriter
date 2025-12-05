@@ -6,3 +6,4 @@ langchain-google-genai
 
 # Tool to manage environment variables (secrets)
 python-dotenv
+# Use pip install -r requirements.txt to install
